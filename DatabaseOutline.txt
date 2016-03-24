@@ -1,0 +1,59 @@
+TABLES
+
+  GTA Nominator
+    nominatorName STRING
+    nominatorEmail STRING
+  	
+  GTA Nominee
+    advisor STRING
+    nomineeName STRING
+    PID STRING
+    nomnineeEmail STRING
+    nomineePhone INT
+    isPHDStudent INT
+    semestersAsGrad INT
+    passedSpeak INT
+    semestersAsGTA INT
+  	
+    TODO: list of graduate-level courses completed with letter grade
+    list of publications with citation information
+  	
+  GC Member
+    name STRING
+    email STRING
+    login STRING
+    pass STRING
+  	
+  Admin
+    login	STRING
+    pass STRING
+  	
+  Session
+    sessionID STRING
+    nominationDeadLine DATE
+    nomineeResponseDeadLine DATE
+    nomineeVerificationDeadLine DATE
+
+RELATIONSHIPS
+  
+  Nomination
+    nominator
+    nominee
+    ranking
+    timestamp
+
+  SessionGCChair
+    sessionID
+    GCMember
+
+  SessionGC
+    sessionID
+    GCMember
+
+  SessionGTANominators
+    sessionID
+    GTANominator
+
+  SessionNominees
+    sessionID
+    GTANominee
