@@ -1,11 +1,21 @@
 <link rel="stylesheet" type="text/css" href="DBHomeStyle.css">
+<script>
+	function newSession() {
+		document.location.href = "adminNewSession.html";
+	}
+</script>
 <h1>GTAMS <span>GTA Management System</span></h1>
 <ul class="tabs">
+<div style="float:right;">
+	<button onClick="newSession()" style="cursor: pointer; height:50px;width:150px;color:white; background:black; border:0px;">New Session</button>
+</div>
  <li style="text-align:center;">
         <input type="radio" name="tabs" id="tab3" checked />
         <label for="tab3">System Administrator</label>
         <div id="tab-content3" class="tab-content">
 			<form action="addFaculty.php" method="POST">
+			
+				<h4 style="padding-bottom:15px;">Add Faculty Member</h4>
 				<p style="padding-bottom:15px;">
 					<input required type="text" placeholder="Faculty Name" name="facultyName" id="facultyname" value=""style="height:40px;width:400px;">
 				</p>
