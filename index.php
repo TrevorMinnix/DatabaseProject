@@ -1,37 +1,60 @@
 <?php
-include("config.php");
+session_start();
 
+$con = mysqli_connect("localhost","root","", "dbproject");
+
+if (mysqli_connect_errno()){
+
+echo "MySQLi Connection was not established: " . mysqli_connect_error();
+}
+
+// checking the user
+if(isset($_POST['LOGIN'])){
+
+$user = mysqli_real_escape_string($con,$_POST["username"]);
+
+$pass = mysqli_real_escape_string($con,$_POST["password"]);
+
+$usertype = mysqli_real_escape_string($con,$_POST["usertype"]);
+
+$sel_user = "";
+
+if($usertype == "nominator_user"){
+	$sel_user = "select * from admin where adminLogin='$user' AND adminPass='$pass'";
+} elseif ($usertype == "gc_user"){
+	$sel_user = "select * from gcmember where gcLogin='$user' AND gcPass='$pass'";
+} else{
+	$sel_user = "select * from gtanominator where nominatorLogin='$user' AND nominatorPass='$pass'";
+}
+
+$run_user = mysqli_query($con, $sel_user);
+
+$check_user = mysqli_num_rows($run_user);
+
+if($check_user>0){
+	
+	$sel_session = "select sessionid from session where currentlyActive=1";
+	$run_session = mysqli_query($con, $sel_session);
+
+	$_SESSION['user']=$user;
+	$_SESSION['usertype']=$usertype;
+	$_SESSION['sessionid']=$run_session;
+
+	if($usertype == "nominator_user"){
+	
+	} elseif ($usertype == "gc_user"){
+	
+	} else{
+	
+	}
+
+}
+
+else {
+
+	echo 'no login';
+
+}
+
+}
 ?>
-<link rel="stylesheet" type="text/css" href="DBHomeStyle.css">
-<body>
-
-<div id="form-main">
-    <div id="form-div">
-        <form class="form" id="form1" action="login.php" method="POST">
-
-            <p class="username">
-                <input name="username" type="text" class="validate[required] feedback-input" placeholder="Username" id="username" />
-            </p>
-
-            <p class="password">
-                <input name="password" type="text" class="validate[required] feedback-input" id="password" placeholder="Password" />
-            </p>
-
-            <p class="usertype">
-                <select name="usertype" class="validate[required]  feedback-input" id="usertype" placeholder="User Type">
-                    <option value="nominator_user">Nominator</option>
-                    <option value="gc_user">GC Member</option>
-                    <option value="admin_user">Admin</option>
-                </select>
-            </p>
-
-
-            <div class="submit">
-                <input type="submit" value="LOGIN" id="LOGIN" name="LOGIN" />
-                <div class="ease"></div>
-            </div>
-        </form>
-    </div>
-
-</body>
-
