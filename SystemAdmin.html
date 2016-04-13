@@ -1,12 +1,55 @@
 <link rel="stylesheet" type="text/css" href="DBHomeStyle.css">
 <h1>GTAMS <span>GTA Management System</span></h1>
 <ul class="tabs">
- <li>
+ <li style="text-align:center;">
         <input type="radio" name="tabs" id="tab3" checked />
         <label for="tab3">System Administrator</label>
         <div id="tab-content3" class="tab-content">
-
-			<p>TEsting</p>
+			<form action="addFaculty.php" method="POST">
+				<p style="padding-bottom:15px;">
+					<input required type="text" placeholder="Faculty Name" name="facultyName" id="facultyname" value=""style="height:40px;width:400px;">
+				</p>
+				<p style="padding-bottom:15px;">
+					<input required type="text" placeholder="Faculty Login" name="facultyLogin" id="facultylogin" value=""style="height:40px;width:400px;">
+				</p>
+				<p style="padding-bottom:15px;">
+					<input required type="password" placeholder="Faculty Password" name="facultyPass" id="facultypass" value=""style="height:40px;width:400px;">
+				</p>
+				
+				<p style="padding-bottom:15px;">
+					<input required type="email" placeholder="Faculty Email" name="facultyEmail" id="facultyemail" value=""style="height:40px;width:400px;">
+				</p>
+				
+				<p style="padding-bottom:15px;">
+					<select required name="facultyType" style="height:40px;width:400px;">
+						<option selected disabled>Faculty Type?</option>
+						<option value="gcchair">GC Chair</option>
+						<option value="gcmember">GC Member</option>
+						<option value="professor">Professor</option>
+					</select>
+				</p>
+			
+				<p style="padding-bottom:15px;">
+					<select required name="sessionSemester" style="height:40px;width:400px;">
+						<option selected disabled>Choose Semester</option>
+						<option value="fall">Fall</option>
+						<option value="spring">Spring</option>
+						<option value="summer">Summer</option>
+					</select>
+				</p>
+				<p style="padding-bottom:15px;">
+					<select required name="sessionYear" style="height:40px;width:400px;">
+						<option selected disabled>Choose Year</option>
+						<option value="2016">2016</option>
+						<option value="2017">2017</option>
+					</select>
+				</p>
+				
+			<p style="padding-bottom:15px;">
+				<input required type="submit" name="addFaculty" style="height:40px;width:400px;color:white; background:black; border:0px;"></input>
+			</p>
+			</form>
 		</div>
     </li>
-</ul>
+
+	</ul>
