@@ -1,0 +1,39 @@
+<link rel="stylesheet" type="text/css" href="DBHomeStyle.css">
+<script>
+	function newSession() {
+		document.location.href = "adminNewSession.html";
+	}
+</script>
+<h1>GTAMS <span>GTA Management System</span></h1>
+<ul class="tabs">
+
+ <li style="text-align:center;">
+        <input type="radio" name="tabs" id="tab3" checked />
+        <label for="tab3">System Administrator</label>
+        <div id="tab-content3" class="tab-content">
+			<form action="createSession.php" method="POST">
+				<h4 style="padding-bottom:15px;">New Session</h4>
+				<p style="padding-bottom:15px;">
+					<select required name="sessionSemester" style="height:40px;width:400px;">
+						<option selected disabled>Choose Semester</option>
+						<option value="fall">Fall</option>
+						<option value="spring">Spring</option>
+						<option value="summer">Summer</option>
+					</select>
+				</p>
+				<p style="padding-bottom:15px;">
+					<select required name="sessionYear" style="height:40px;width:400px;">
+						<option selected disabled>Choose Year</option>
+						<option value="2016">2016</option>
+						<option value="2017">2017</option>
+					</select>
+				</p>
+				
+			<p style="padding-bottom:15px;">
+				<input required type="submit" name="addFaculty" style="height:40px;width:400px;color:white; background:black; border:0px;"></input>
+			</p>
+			</form>
+		</div>
+    </li>
+
+	</ul>
