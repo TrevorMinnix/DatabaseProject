@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'connect.php';
 
 // checking the user
@@ -44,6 +45,7 @@ if(isset($_POST['submitNomination'])){
 	$executeSessionNominee = mysqli_query($con, $createSessionNominee);
 
 	//A nominee was just nominated, and an email needs to be send to notify the nominee
+	
 	$messagebody = urlencode ("http://127.0.0.1/newnominee.php?pid=$nomineePid");
 	header("Location:sendmail.py?recipient=$nomineeEmail&body=$messagebody");
 	

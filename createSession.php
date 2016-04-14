@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'connect.php';
 
 // checking the user
@@ -24,5 +25,6 @@ if (isset($_POST['addSession'])) {
     $execute2 = mysqli_query($con, $queryToExecute2) or trigger_error("Query Failed! SQL: $queryToExecute1 - Error: ". mysqli_error($con), E_USER_ERROR);
 
     //echo "$queryToExecute1, $queryToExecute2";
+    header("Location:SystemAdmin.html");
 
 }

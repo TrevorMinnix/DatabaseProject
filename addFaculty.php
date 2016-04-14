@@ -17,7 +17,7 @@ if (isset($_POST['addFaculty'])) {
 
     //Admin is adding a gcchair to a session
     if ($facultyType == "gcchair") {
-        $queryToExecute = "INSERT INTO gcchair (gcLogin, sessionid) VALUES ('$facultyLogin', '$sessionId'); INSERT INTO gcmember (gcName, gcEmail, gcLogin, gcPass) VALUES ('$facultyName', '$facultyEmail', '$facultyLogin', '$facultyPass');INSERT INTO sessiongc (sessionid, gcLogin)VALUES('$sessionid', '$facultyLogin')";
+        $queryToExecute = "INSERT INTO gcchair (gcLogin, sessionid) VALUES ('$facultyLogin', '$sessionid'); INSERT INTO gcmember (gcName, gcEmail, gcLogin, gcPass) VALUES ('$facultyName', '$facultyEmail', '$facultyLogin', '$facultyPass');INSERT INTO sessiongc (sessionid, gcLogin)VALUES('$sessionid', '$facultyLogin')";
     } //Admin is adding a gcmember
     else if ($facultyType == "gcmember") {
         $insertInto = "gcmember";
@@ -38,6 +38,9 @@ if (isset($_POST['addFaculty'])) {
         $executeNomineeUpdate = mysqli_multi_query($con, $queryToExecute) or trigger_error("Query Failed! SQL: $queryToExecute - Error: ". mysqli_error($con), E_USER_ERROR);
     }
     //The system admin has just submitted the form, the form has been saved, and it should be cleared now
+
+    $messagebody = urlencode ("Your account has been made. Username: $facultyLogin Password: $facultyPass");
+    header("Location:sendmail.py?recipient=$facultyEmail&body=$messagebody");
 
 }
 ?>

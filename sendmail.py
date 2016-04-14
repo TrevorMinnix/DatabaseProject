@@ -11,7 +11,7 @@ form = cgi.FieldStorage()
 
 fromaddr = 'dbproject.team12@gmail.com'
 toaddr  = urllib.unquote_plus(str(form.getvalue('recipient')))
-msg = urllib.unquote_plus(str(form.getvalue('body')))
+msg = "\n" + urllib.unquote_plus(str(form.getvalue('body')))
 username = 'dbproject.team12@gmail.com'
 password = 'eqrzqierouywovez'
 server = smtplib.SMTP('smtp.gmail.com:587')
