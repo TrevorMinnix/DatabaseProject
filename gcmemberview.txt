@@ -1,0 +1,4 @@
+CREATE VIEW [gcmember table] AS
+SELECT N.nominatorName, M.nomineeName, O.ranking, M.newlyAdmitted 
+FROM gtanominator N, gtanominee M, nomination O
+WHERE N.nominatorLogin=O.nominatorLogin AND M.pid=O.pid
