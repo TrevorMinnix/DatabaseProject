@@ -1,12 +1,7 @@
 <?php
 session_start();
 
-$con = mysqli_connect("localhost", "root", "", "dbproject");
-
-if (mysqli_connect_errno()) {
-
-    echo "MySQLi Connection was not established: " . mysqli_connect_error();
-}
+include 'connect.php';
 
 // checking the user
 if (isset($_POST['LOGIN'])) {

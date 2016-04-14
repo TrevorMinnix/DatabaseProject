@@ -11,7 +11,7 @@
         <input type="radio" name="tabs" id="tab3" checked />
         <label for="tab3">System Administrator</label>
         <div id="tab-content3" class="tab-content">
-			<form action="createSession.php" method="POST">
+			<form id="myForm" target="my-iframe" action="createSession.php" method="POST">
 				<h4 style="padding-bottom:15px;">New Session</h4>
 				<p style="padding-bottom:15px;">
 					<select required name="sessionSemester" style="height:40px;width:400px;">
@@ -43,10 +43,12 @@
 					<input required type="date" placeholder="Nominee Verification Deadline" name="nomineeVerificationDeadline" id="nomineeVerificationDeadline" value=""style="height:40px;width:400px;">
 				</p>
 			<p style="padding-top:20px;padding-bottom:15px;">
-				<input required type="submit" name="addFaculty" style="height:40px;width:400px;color:white; background:black; border:0px;"></input>
+				<input required onclick="document.getElementById('myForm').reset();" type="submit" name="addFaculty" style="height:40px;width:400px;color:white; background:black; border:0px;"></input>
 			</p>
 			</form>
 		</div>
     </li>
 
 	</ul>
+	
+	<iframe name="my-iframe" src="createSession.php"></iframe>

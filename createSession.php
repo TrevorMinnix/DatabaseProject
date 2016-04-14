@@ -1,9 +1,6 @@
 <?php
-$con = mysqli_connect("localhost","root","", "dbproject");
-if (mysqli_connect_errno())
-{
-echo "MySQLi Connection was not established: " . mysqli_connect_error();
-}
+include 'connect.php';
+
 // checking the user
 if(isset($_POST['submitNomineeForm'])){
 	
@@ -17,6 +14,6 @@ if(isset($_POST['submitNomineeForm'])){
 	$timestamp = date('y-m-d h:m:s');
 	
 	//Need to create session in DB based on values above
-	
+	//This new seesion is also no active
 }
 ?>

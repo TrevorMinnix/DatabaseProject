@@ -1,9 +1,6 @@
 <?php
-$con = mysqli_connect("localhost","root","", "dbproject");
-if (mysqli_connect_errno())
-{
-echo "MySQLi Connection was not established: " . mysqli_connect_error();
-}
+include 'connect.php';
+
 // checking the user
 if(isset($_POST['submitNomination'])){
 	
@@ -46,7 +43,8 @@ if(isset($_POST['submitNomination'])){
 	//Execute the query
 	$executeSessionNominee = mysqli_query($con, $createSessionNominee);
 
-	//A nominee was just nominated, and an email needs to be send to notify the nominee 
+	//A nominee was just nominated, and an email needs to be send to notify the nominee
+	
 	
 }
 ?>
