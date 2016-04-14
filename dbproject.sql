@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 13, 2016 at 03:44 AM
+-- Generation Time: Apr 14, 2016 at 09:17 AM
 -- Server version: 5.7.11
 -- PHP Version: 5.6.19
 
@@ -19,8 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `dbproject`
 --
-CREATE DATABASE IF NOT EXISTS `dbproject` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `dbproject`;
 
 -- --------------------------------------------------------
 
@@ -38,7 +36,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`adminLogin`, `adminPass`) VALUES
-('test', 'test');
+('a', 'a');
 
 -- --------------------------------------------------------
 
@@ -48,8 +46,15 @@ INSERT INTO `admin` (`adminLogin`, `adminPass`) VALUES
 
 CREATE TABLE `gcchair` (
   `gcLogin` varchar(50) NOT NULL,
-  `sessionid` int(11) NOT NULL
+  `sessionid` varchar(20) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `gcchair`
+--
+
+INSERT INTO `gcchair` (`gcLogin`, `sessionid`) VALUES
+('mm', '');
 
 -- --------------------------------------------------------
 
@@ -64,6 +69,26 @@ CREATE TABLE `gcmember` (
   `gcPass` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `gcmember`
+--
+
+INSERT INTO `gcmember` (`gcName`, `gcEmail`, `gcLogin`, `gcPass`) VALUES
+('Mark McCulloh', 'Mark.McCulloh@gmail.com', 'mm', 'mm');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gcscoring`
+--
+
+CREATE TABLE `gcscoring` (
+  `gcLogin` varchar(50) NOT NULL,
+  `pid` varchar(20) NOT NULL,
+  `score` int(11) NOT NULL,
+  `sessionid` varchar(20) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
 -- --------------------------------------------------------
 
 --
@@ -76,6 +101,13 @@ CREATE TABLE `gtanominator` (
   `nominatorLogin` varchar(50) NOT NULL,
   `nominatorPass` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `gtanominator`
+--
+
+INSERT INTO `gtanominator` (`nominatorName`, `nominatorEmail`, `nominatorLogin`, `nominatorPass`) VALUES
+('Mark', 'Mark.McCulloh@gmail.com', 'ma', 'ma');
 
 -- --------------------------------------------------------
 
@@ -110,20 +142,7 @@ CREATE TABLE `nomination` (
   `pid` varchar(20) NOT NULL,
   `ranking` int(11) NOT NULL,
   `timestamp` datetime NOT NULL,
-  `sessionid` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `gcscoring`
---
-
-CREATE TABLE `gcscoring` (
-  `gcLogin` varchar(50) NOT NULL,
-  `pid` varchar(20) NOT NULL,
-  `score` int(11) NOT NULL,
-  `sessionid` int(11) NOT NULL
+  `sessionid` varchar(20) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -133,12 +152,19 @@ CREATE TABLE `gcscoring` (
 --
 
 CREATE TABLE `session` (
-  `sessionid` int(11) NOT NULL,
+  `sessionid` varchar(20) NOT NULL,
   `nominationDeadline` datetime NOT NULL,
   `nomineeResponseDeadline` datetime NOT NULL,
-  `nomineeVerficationDeadline` datetime NOT NULL,
+  `nomineeVerificationDeadline` datetime NOT NULL,
   `currentlyActive` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `session`
+--
+
+INSERT INTO `session` (`sessionid`, `nominationDeadline`, `nomineeResponseDeadline`, `nomineeVerificationDeadline`, `currentlyActive`) VALUES
+('summer2017', '2016-04-15 00:00:00', '2016-04-21 00:00:00', '2016-04-20 00:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -147,9 +173,16 @@ CREATE TABLE `session` (
 --
 
 CREATE TABLE `sessiongc` (
-  `sessionid` int(11) NOT NULL,
+  `sessionid` varchar(20) NOT NULL,
   `gcLogin` varchar(50) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `sessiongc`
+--
+
+INSERT INTO `sessiongc` (`sessionid`, `gcLogin`) VALUES
+('', 'mm');
 
 -- --------------------------------------------------------
 
@@ -158,7 +191,7 @@ CREATE TABLE `sessiongc` (
 --
 
 CREATE TABLE `sessionnominators` (
-  `sessionid` int(11) NOT NULL,
+  `sessionid` varchar(20) NOT NULL,
   `gtaNominatorLogin` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -169,7 +202,7 @@ CREATE TABLE `sessionnominators` (
 --
 
 CREATE TABLE `sessionnominee` (
-  `sessionid` int(11) NOT NULL,
+  `sessionid` varchar(20) NOT NULL,
   `gtanomineeLogin` int(20) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -198,6 +231,12 @@ ALTER TABLE `gcmember`
   ADD PRIMARY KEY (`gcLogin`);
 
 --
+-- Indexes for table `gcscoring`
+--
+ALTER TABLE `gcscoring`
+  ADD KEY `gcLogin` (`gcLogin`,`pid`,`sessionid`);
+
+--
 -- Indexes for table `gtanominator`
 --
 ALTER TABLE `gtanominator`
@@ -214,12 +253,6 @@ ALTER TABLE `gtanominee`
 --
 ALTER TABLE `nomination`
   ADD KEY `nominatorLogin` (`nominatorLogin`,`pid`,`sessionid`);
-
---
--- Indexes for table `gcscoring`
---
-ALTER TABLE `gcscoring`
-  ADD KEY `gcLogin` (`gcLogin`,`pid`,`sessionid`);
 
 --
 -- Indexes for table `session`
