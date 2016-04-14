@@ -4,7 +4,7 @@
     <li>
         <input type="radio" name="tabs" id="tab3" checked/>
         <label for="tab3">GC Members</label>
-        <div id="tab-content3" class="tab-content">
+        <div id="tab-content3" class="tab-content" align="center">
             <?php
             include 'connect.php';
 
