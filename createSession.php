@@ -24,6 +24,8 @@ if (isset($_POST['addSession'])) {
     $execute1 = mysqli_query($con, $queryToExecute1) or trigger_error("Query Failed! SQL: $queryToExecute1 - Error: ". mysqli_error($con), E_USER_ERROR);
     $execute2 = mysqli_query($con, $queryToExecute2) or trigger_error("Query Failed! SQL: $queryToExecute1 - Error: ". mysqli_error($con), E_USER_ERROR);
 
+    $_SESSION['sessionid'] = "$sessionSemester$sessionYear";
+
     //echo "$queryToExecute1, $queryToExecute2";
     header("Location:SystemAdmin.html");
 

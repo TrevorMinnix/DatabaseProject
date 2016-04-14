@@ -43,7 +43,7 @@ if (isset($_POST['LOGIN'])) {
         if ($usertype == "nominator_user") {
             header("Location:Nominator.html");
         } elseif ($usertype == "gc_user") {
-            header("Location:GCMember.html");
+            header("Location:GCMember.php");
         } else {
             header("Location:SystemAdmin.html");
         }

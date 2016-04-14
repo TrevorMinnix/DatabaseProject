@@ -11,8 +11,6 @@ if (isset($_POST['addFaculty'])) {
     $facultyPass = mysqli_real_escape_string($con, $_POST["facultyPass"]);
     $facultyEmail = mysqli_real_escape_string($con, $_POST["facultyEmail"]);
     $facultyType = mysqli_real_escape_string($con, $_POST["facultyType"]);
-    //$sessionSemester = mysqli_real_escape_string($con, $_POST["sessionSemester"]);
-    //$sessionYear = mysqli_real_escape_string($con, $_POST["sessionYear"]);
     $sessionid = $_SESSION['sessionid'];
 
     //Admin is adding a gcchair to a session
