@@ -1,4 +1,4 @@
-#!C:\Program Files (x86)\EasyPHP-Devserver-16.1\eds-binaries\python\default\python.exe
+#!..\eds-binaries\python\default\python.exe
 
 #commandline arguments: "recipient address" "email body text"
 
