@@ -116,6 +116,19 @@ CREATE TABLE `nomination` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `gcscoring`
+--
+
+CREATE TABLE `gcscoring` (
+  `gcLogin` varchar(50) NOT NULL,
+  `pid` varchar(20) NOT NULL,
+  `score` int(11) NOT NULL,
+  `sessionid` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `session`
 --
 
@@ -201,6 +214,12 @@ ALTER TABLE `gtanominee`
 --
 ALTER TABLE `nomination`
   ADD KEY `nominatorLogin` (`nominatorLogin`,`pid`,`sessionid`);
+
+--
+-- Indexes for table `gcscoring`
+--
+ALTER TABLE `gcscoring`
+  ADD KEY `gcLogin` (`gcLogin`,`pid`,`sessionid`);
 
 --
 -- Indexes for table `session`
