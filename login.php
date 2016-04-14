@@ -1,4 +1,5 @@
 <?php
+session_destroy();
 session_start();
 
 include 'connect.php';
@@ -14,12 +15,12 @@ if (isset($_POST['LOGIN'])) {
 
     $sel_user = "";
 
-    if ($usertype == "nominator_user") {
-        $sel_user = "select * from gtanominator where nominatorLogin='$user'' AND nominatorPass='$pass'";
+    if ($usertype == "admin_user") {
+        $sel_user = "select * from admin where adminLogin='$user' AND adminPass='$pass'";
     } elseif ($usertype == "gc_user") {
         $sel_user = "select * from gcmember where gcLogin='$user' AND gcPass='$pass'";
     } else {
-        $sel_user = "select * from admin where adminLogin='$user' AND adminPass='$pass'";
+        $sel_user = "select * from gtanominator where nominatorLogin='$user' AND nominatorPass='$pass'";
     }
 
     $run_user = mysqli_query($con, $sel_user);
@@ -28,12 +29,16 @@ if (isset($_POST['LOGIN'])) {
 
     if ($check_user > 0) {
 
-        $sel_session = "select sessionid from session where currentlyActive=1";
+        $sel_session = "select sessionid from session where currentlyActive=TRUE";
         $run_session = mysqli_query($con, $sel_session);
+
+        $data = $run_session->fetch_array();
+        $_SESSION['sessionid'] = (string)$data['sessionid'];
+
 
         $_SESSION['user'] = $user;
         $_SESSION['usertype'] = $usertype;
-        $_SESSION['sessionid'] = $run_session;
+
 
         if ($usertype == "nominator_user") {
             header("Location:Nominator.html");
@@ -45,7 +50,7 @@ if (isset($_POST['LOGIN'])) {
 
     } else {
 
-        echo 'no login';
+        echo 'Invalid Login';
 
     }
 

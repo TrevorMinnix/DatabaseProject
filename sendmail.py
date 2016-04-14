@@ -5,12 +5,13 @@
 import smtplib
 import sys
 import cgi
+import urllib
 
 form = cgi.FieldStorage()
 
 fromaddr = 'dbproject.team12@gmail.com'
-toaddr  = str(form.getvalue('recipient'))
-msg = str(form.getvalue('body'))
+toaddr  = urllib.unquote_plus(str(form.getvalue('recipient')))
+msg = urllib.unquote_plus(str(form.getvalue('body')))
 username = 'dbproject.team12@gmail.com'
 password = 'eqrzqierouywovez'
 server = smtplib.SMTP('smtp.gmail.com:587')
@@ -23,6 +24,8 @@ print "Content-type: text/html"
 print
 print "<html><head>"
 print ""
-print "</head><body>"
-print "Email Sent"
-print "</body></html>"
+print toaddr
+print msg
+#print "</head><body onload=\"document.location=\'Nominator.html\'\"></body>"
+print ""
+print "</html>"
