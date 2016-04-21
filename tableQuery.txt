@@ -1,0 +1,7 @@
+SELECT nominatorName, nomineeName, ranking, newlyAdmitted 
+FROM gtanominee 
+INNER JOIN nomination 
+	ON gtanominee.pid=nomination.pid 
+INNER JOIN gtanominator 
+	ON gtanominator.nominatorLogin=nomination.nominatorLogin 
+WHERE sessionid="summer2017"
