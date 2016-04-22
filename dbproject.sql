@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 22, 2016 at 05:11 AM
+-- Generation Time: Apr 23, 2016 at 12:37 AM
 -- Server version: 5.7.11
 -- PHP Version: 5.6.19
 
@@ -47,14 +47,14 @@ INSERT INTO `admin` (`adminLogin`, `adminPass`) VALUES
 CREATE TABLE `gcchair` (
   `gcLogin` varchar(50) NOT NULL,
   `sessionid` varchar(20) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `gcchair`
 --
 
 INSERT INTO `gcchair` (`gcLogin`, `sessionid`) VALUES
-('mm', '');
+('gc1', 'summer2017');
 
 -- --------------------------------------------------------
 
@@ -74,7 +74,9 @@ CREATE TABLE `gcmember` (
 --
 
 INSERT INTO `gcmember` (`gcName`, `gcEmail`, `gcLogin`, `gcPass`) VALUES
-('Mark McCulloh', 'Mark.McCulloh@gmail.com', 'mm', 'mm');
+('Effie, Karlene', 'gc1@mailinator.com', 'gc1', 'gc1'),
+('Estelle, Andre', 'gc2@mailinator.com', 'gc2', 'gc2'),
+('Jeanette, Fiona', 'gc3@mailinator.com', 'gc3', 'gc3');
 
 -- --------------------------------------------------------
 
@@ -87,7 +89,7 @@ CREATE TABLE `gcscoring` (
   `pid` varchar(20) NOT NULL,
   `score` int(11) NOT NULL,
   `sessionid` varchar(20) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -107,7 +109,9 @@ CREATE TABLE `gtanominator` (
 --
 
 INSERT INTO `gtanominator` (`nominatorName`, `nominatorEmail`, `nominatorLogin`, `nominatorPass`) VALUES
-('Mark', 'Mark.McCulloh@gmail.com', 'ma', 'ma');
+('Caden, Quinn', 'nom1@mailinator.com', 'nom1', 'nom1'),
+('Page, Luvenia', 'nom2@mialinator.com', 'nom2', 'nom2'),
+('Finnega, Monte', 'nom3@mailinator.com', 'nom3', 'nom3');
 
 -- --------------------------------------------------------
 
@@ -116,19 +120,20 @@ INSERT INTO `gtanominator` (`nominatorName`, `nominatorEmail`, `nominatorLogin`,
 --
 
 CREATE TABLE `gtanominee` (
-  `advisor` varchar(70) NOT NULL,
-  `nomineeName` varchar(70) NOT NULL,
+  `advisor` varchar(70) DEFAULT NULL,
+  `nomineeName` varchar(70) DEFAULT NULL,
   `pid` varchar(20) NOT NULL,
-  `nomineeEmail` varchar(255) NOT NULL,
-  `nomineePhone` int(10) NOT NULL,
-  `isPHDStudent` int(11) NOT NULL,
-  `semestersAsGrad` int(11) NOT NULL,
-  `passedSpeak` int(11) NOT NULL,
-  `semestersAsGTA` int(11) NOT NULL,
-  `gradCourses` varchar(255) NOT NULL,
-  `gpa` float NOT NULL,
-  `publications` varchar(255) NOT NULL,
-  `newlyAdmitted` tinyint(1) NOT NULL
+  `nomineeEmail` varchar(255) DEFAULT NULL,
+  `nomineePhone` varchar(10) DEFAULT NULL,
+  `isPHDStudent` int(11) DEFAULT NULL,
+  `semestersAsGrad` int(11) DEFAULT NULL,
+  `passedSpeak` int(11) DEFAULT NULL,
+  `semestersAsGTA` int(11) DEFAULT NULL,
+  `gradCourses` varchar(255) DEFAULT NULL,
+  `gpa` float DEFAULT NULL,
+  `publications` varchar(255) DEFAULT NULL,
+  `newlyAdmitted` tinyint(1) DEFAULT NULL,
+  `verified` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -143,7 +148,7 @@ CREATE TABLE `nomination` (
   `ranking` int(11) NOT NULL,
   `timestamp` datetime NOT NULL,
   `sessionid` varchar(20) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -175,14 +180,16 @@ INSERT INTO `session` (`sessionid`, `nominationDeadline`, `nomineeResponseDeadli
 CREATE TABLE `sessiongc` (
   `sessionid` varchar(20) NOT NULL,
   `gcLogin` varchar(50) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `sessiongc`
 --
 
 INSERT INTO `sessiongc` (`sessionid`, `gcLogin`) VALUES
-('', 'mm');
+('summer2017', 'gc1'),
+('summer2017', 'gc2'),
+('summer2017', 'gc3');
 
 -- --------------------------------------------------------
 
@@ -192,8 +199,17 @@ INSERT INTO `sessiongc` (`sessionid`, `gcLogin`) VALUES
 
 CREATE TABLE `sessionnominators` (
   `sessionid` varchar(20) NOT NULL,
-  `gtaNominatorLogin` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `gtaNominatorLogin` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `sessionnominators`
+--
+
+INSERT INTO `sessionnominators` (`sessionid`, `gtaNominatorLogin`) VALUES
+('summer2017', 'nom1'),
+('summer2017', 'nom2'),
+('summer2017', 'nom3');
 
 -- --------------------------------------------------------
 
@@ -204,7 +220,7 @@ CREATE TABLE `sessionnominators` (
 CREATE TABLE `sessionnominee` (
   `sessionid` varchar(20) NOT NULL,
   `gtanomineeLogin` varchar(20) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Indexes for dumped tables
@@ -221,46 +237,57 @@ ALTER TABLE `admin`
 --
 ALTER TABLE `gcchair`
   ADD PRIMARY KEY (`gcLogin`,`sessionid`),
+  ADD UNIQUE KEY `sessionid_2` (`sessionid`),
   ADD KEY `gcLogin` (`gcLogin`),
-  ADD KEY `sessionid` (`sessionid`);
+  ADD KEY `sessionid` (`sessionid`),
+  ADD KEY `gcLogin_2` (`gcLogin`),
+  ADD KEY `gcLogin_3` (`gcLogin`);
 
 --
 -- Indexes for table `gcmember`
 --
 ALTER TABLE `gcmember`
-  ADD PRIMARY KEY (`gcLogin`);
+  ADD PRIMARY KEY (`gcLogin`),
+  ADD KEY `gcLogin` (`gcLogin`);
 
 --
 -- Indexes for table `gcscoring`
 --
 ALTER TABLE `gcscoring`
   ADD PRIMARY KEY (`gcLogin`,`pid`,`sessionid`),
-  ADD KEY `gcLogin` (`gcLogin`,`pid`,`sessionid`);
+  ADD KEY `gcLogin` (`gcLogin`,`pid`,`sessionid`),
+  ADD KEY `pid` (`pid`),
+  ADD KEY `sessionid` (`sessionid`);
 
 --
 -- Indexes for table `gtanominator`
 --
 ALTER TABLE `gtanominator`
-  ADD PRIMARY KEY (`nominatorLogin`);
+  ADD PRIMARY KEY (`nominatorLogin`),
+  ADD KEY `nominatorLogin` (`nominatorLogin`);
 
 --
 -- Indexes for table `gtanominee`
 --
 ALTER TABLE `gtanominee`
-  ADD PRIMARY KEY (`pid`);
+  ADD PRIMARY KEY (`pid`),
+  ADD KEY `pid` (`pid`);
 
 --
 -- Indexes for table `nomination`
 --
 ALTER TABLE `nomination`
   ADD PRIMARY KEY (`nominatorLogin`,`pid`,`sessionid`),
-  ADD KEY `nominatorLogin` (`nominatorLogin`,`pid`,`sessionid`);
+  ADD KEY `nominatorLogin` (`nominatorLogin`,`pid`,`sessionid`),
+  ADD KEY `pid` (`pid`),
+  ADD KEY `sessionid` (`sessionid`);
 
 --
 -- Indexes for table `session`
 --
 ALTER TABLE `session`
-  ADD PRIMARY KEY (`sessionid`);
+  ADD PRIMARY KEY (`sessionid`),
+  ADD KEY `sessionid` (`sessionid`);
 
 --
 -- Indexes for table `sessiongc`
@@ -285,6 +312,54 @@ ALTER TABLE `sessionnominee`
   ADD PRIMARY KEY (`sessionid`,`gtanomineeLogin`),
   ADD KEY `sessionid` (`sessionid`),
   ADD KEY `gtanomineeLogin` (`gtanomineeLogin`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `gcchair`
+--
+ALTER TABLE `gcchair`
+  ADD CONSTRAINT `gcchair_ibfk_1` FOREIGN KEY (`sessionid`) REFERENCES `session` (`sessionid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `gcchair_ibfk_2` FOREIGN KEY (`gcLogin`) REFERENCES `gcmember` (`gcLogin`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `gcscoring`
+--
+ALTER TABLE `gcscoring`
+  ADD CONSTRAINT `gcscoring_ibfk_1` FOREIGN KEY (`gcLogin`) REFERENCES `gcmember` (`gcLogin`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `gcscoring_ibfk_2` FOREIGN KEY (`pid`) REFERENCES `gtanominee` (`pid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `gcscoring_ibfk_3` FOREIGN KEY (`sessionid`) REFERENCES `session` (`sessionid`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `nomination`
+--
+ALTER TABLE `nomination`
+  ADD CONSTRAINT `nomination_ibfk_1` FOREIGN KEY (`nominatorLogin`) REFERENCES `gtanominator` (`nominatorLogin`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `nomination_ibfk_2` FOREIGN KEY (`pid`) REFERENCES `gtanominee` (`pid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `nomination_ibfk_3` FOREIGN KEY (`sessionid`) REFERENCES `session` (`sessionid`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `sessiongc`
+--
+ALTER TABLE `sessiongc`
+  ADD CONSTRAINT `sessiongc_ibfk_1` FOREIGN KEY (`sessionid`) REFERENCES `session` (`sessionid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `sessiongc_ibfk_2` FOREIGN KEY (`gcLogin`) REFERENCES `gcmember` (`gcLogin`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `sessionnominators`
+--
+ALTER TABLE `sessionnominators`
+  ADD CONSTRAINT `sessionnominators_ibfk_1` FOREIGN KEY (`sessionid`) REFERENCES `session` (`sessionid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `sessionnominators_ibfk_2` FOREIGN KEY (`gtaNominatorLogin`) REFERENCES `gtanominator` (`nominatorLogin`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `sessionnominee`
+--
+ALTER TABLE `sessionnominee`
+  ADD CONSTRAINT `sessionnominee_ibfk_1` FOREIGN KEY (`sessionid`) REFERENCES `session` (`sessionid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `sessionnominee_ibfk_2` FOREIGN KEY (`gtanomineeLogin`) REFERENCES `gtanominee` (`pid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
