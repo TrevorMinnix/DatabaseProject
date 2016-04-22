@@ -6,24 +6,83 @@
         <label for="tab3">GC Members</label>
         <div id="tab-content3" class="tab-content" align="center">
             <?php
+			session_start();
             include 'connect.php';
 
-            $result = mysqli_query($con, "SELECT * FROM gtanominee");
+
+			//get table data excluding gc scores
+            $table_data = mysqli_query($con, "SELECT nominatorName, nomineeName, ranking, newlyAdmitted, gtanominee.pid FROM gtanominee INNER JOIN nomination ON gtanominee.pid=nomination.pid INNER JOIN gtanominator ON gtanominator.nominatorLogin=nomination.nominatorLogin WHERE sessionid=\"{$_SESSION['sessionid']}\" ORDER BY nominatorName ASC, ranking ASC");
+			
+			//get gc members in current session
+			$gc_members = mysqli_query($con, "SELECT gcName, gcmember.gcLogin FROM gcmember INNER JOIN sessiongc ON gcmember.gcLogin=sessiongc.gcLogin WHERE sessionid=\"{$_SESSION['sessionid']}\" ORDER BY gcName ASC");
 
             echo "<table border='1'>
                     <tr>
-                    <th>Name</th>
-                    <th>NewAdmission</th>
-                    </tr>";
+                    <th>Nominator</th>
+                    <th>Nominee</th>
+					<th>Ranking</th>
+					<th>Existing or New</th>";
+            //add headers for each gc member in session
+			while($row = mysqli_fetch_array($gc_members)){
+				echo "<th>" . $row['gcName'] . "</th>";
+				echo "<th>Comment</th>";
+			}
+			echo "<th>Average</th>";
+			echo "</tr>";
 
-            while ($row = mysqli_fetch_array($result)) {
+            while ($row1 = mysqli_fetch_array($table_data)) {
+				$sum = 0;
+				$ct = 0;
                 echo "<tr>";
-                echo "<td>" . $row['nomineeName'] . "</td>";
-                echo "<td>" . $row['newlyAdmitted'] . "</td>";
+                echo "<td>" . $row1['nominatorName'] . "</td>";
+                echo "<td>" . $row1['nomineeName'] . "</td>";	//TODO: add popup with nominee information
+				echo "<td>" . $row1['ranking'] . "</td>";
+				//replace newlyAdmitted int
+				if($row1['newlyAdmitted'] == 1){
+					echo "<td>New</td>";
+				}
+				else{
+					echo "<td>Existing</td>";
+				}
+				
+				//reset fetch position
+				mysqli_data_seek($gc_members, 0);
+				//loop through each gc member for each nominee
+				while($row2 = mysqli_fetch_array($gc_members))
+				{
+					//if there is a score for that gc member and nominee, print
+					$score = mysqli_query($con, "SELECT score, comment, gcLogin FROM gcscoring WHERE gcLogin=\"{$row2['gcLogin']}\" AND pid=\"{$row1['pid']}\"");
+					if($row3 = mysqli_fetch_array($score)){
+						$sum = $sum + $row3['score'];
+						$ct++;
+						echo "<td>" . $row3['score'] . "</td>";
+						echo "<td>" . $row3['comment'] . "</td>";
+					}
+					//else if user's cells is empty, allow score and comment input in cells owned by logged in user
+					else if($_SESSION["user"] == $row2['gcLogin'])
+					{
+						echo"<td>field here</td><td>field here</td>";	//TODO: add fields to update scores in table
+					}
+					//else leave cells empty
+					else{
+						echo "<td></td><td></td>";
+					}
+				}
+				//average
+				if($ct != 0){
+					$average = $sum/$ct;
+				}
+				else{
+					$average = 0;
+				}
+				
+				echo "<td>" . $average . "</td>";
                 echo "</tr>";
             }
             echo "</table>";
 
+			//TODO: add submit button for scoring changes
+			
             mysqli_close($con);
             ?>
             </table>
