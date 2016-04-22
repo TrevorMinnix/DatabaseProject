@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 14, 2016 at 09:17 AM
+-- Generation Time: Apr 22, 2016 at 05:11 AM
 -- Server version: 5.7.11
 -- PHP Version: 5.6.19
 
@@ -203,7 +203,7 @@ CREATE TABLE `sessionnominators` (
 
 CREATE TABLE `sessionnominee` (
   `sessionid` varchar(20) NOT NULL,
-  `gtanomineeLogin` int(20) NOT NULL
+  `gtanomineeLogin` varchar(20) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
@@ -234,6 +234,7 @@ ALTER TABLE `gcmember`
 -- Indexes for table `gcscoring`
 --
 ALTER TABLE `gcscoring`
+  ADD PRIMARY KEY (`gcLogin`,`pid`,`sessionid`),
   ADD KEY `gcLogin` (`gcLogin`,`pid`,`sessionid`);
 
 --
@@ -252,6 +253,7 @@ ALTER TABLE `gtanominee`
 -- Indexes for table `nomination`
 --
 ALTER TABLE `nomination`
+  ADD PRIMARY KEY (`nominatorLogin`,`pid`,`sessionid`),
   ADD KEY `nominatorLogin` (`nominatorLogin`,`pid`,`sessionid`);
 
 --
