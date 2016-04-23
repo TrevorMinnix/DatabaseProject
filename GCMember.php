@@ -11,11 +11,13 @@
 
 
 			//get table data excluding gc scores
-            $table_data = mysqli_query($con, "SELECT nominatorName, nomineeName, ranking, newlyAdmitted, gtanominee.pid FROM gtanominee INNER JOIN nomination ON gtanominee.pid=nomination.pid INNER JOIN gtanominator ON gtanominator.nominatorLogin=nomination.nominatorLogin WHERE sessionid=\"{$_SESSION['sessionid']}\" ORDER BY nominatorName ASC, ranking ASC");
+			//verified nominees only
+            $table_data = mysqli_query($con, "SELECT nominatorName, nomineeName, ranking, newlyAdmitted, gtanominee.pid FROM gtanominee INNER JOIN nomination ON gtanominee.pid=nomination.pid INNER JOIN gtanominator ON gtanominator.nominatorLogin=nomination.nominatorLogin WHERE sessionid=\"{$_SESSION['sessionid']}\" AND verified=1 ORDER BY nominatorName ASC, ranking ASC");
 			
 			//get gc members in current session
 			$gc_members = mysqli_query($con, "SELECT gcName, gcmember.gcLogin FROM gcmember INNER JOIN sessiongc ON gcmember.gcLogin=sessiongc.gcLogin WHERE sessionid=\"{$_SESSION['sessionid']}\" ORDER BY gcName ASC");
 
+			echo'<h2>Verified Nominees</h2>';
             echo "<table border='1'>
                     <tr>
                     <th>Nominator</th>
@@ -35,7 +37,8 @@
 				$ct = 0;
                 echo "<tr>";
                 echo "<td>" . $row1['nominatorName'] . "</td>";
-                //echo "<td>" . $row1['nomineeName'] . "</td>";	//TODO: add popup with nominee information
+                //echo "<td>" . $row1['nomineeName'] . "</td>";	
+				//popup with nominee information
 				$nomineeURL = "nomineeInfo.php?pid=" . $row1['pid'];
 				echo "<td>" . "<a href=\"{$nomineeURL}\" target=\"_blank\">" . $row1['nomineeName'] . "</a>" . "</td>";
 				echo "<td>" . $row1['ranking'] . "</td>";
@@ -83,7 +86,28 @@
                 echo "</tr>";
             }
             echo "</table>";
-
+			
+			//unverified or unresponding nominees
+			$incompleteQuery = mysqli_query($con, "SELECT nomineeName, responded, verified, gtanominee.pid FROM gtanominee INNER JOIN nomination ON gtanominee.pid=nomination.pid WHERE sessionid='{$_SESSION['sessionid']}' AND (responded=0 OR verified=0) ORDER BY nomineeName ASC");
+			
+			
+			echo '<h2>Incomplete Nomination</h2>
+				<table border="1">
+					<th>Nominee</th>
+					<th>Reason</th>
+					</tr>';
+					
+			//loop through nominees
+			while($incomplete = mysqli_fetch_array($incompleteQuery)){
+				$reason = "Failed to respond";
+				if($incomplete['responded']){
+					$reason = "Unverified";
+				}
+				$nomineeURL = "nomineeInfo.php?pid=" . $incomplete['pid'];
+				echo "<td>" . "<a href=\"{$nomineeURL}\" target=\"_blank\">" . $incomplete['nomineeName'] . "</a>" . "</td>";
+				echo '<td>' . $reason . '</td></tr>';
+			}
+					
 			//TODO: add submit button for scoring changes
 			
             mysqli_close($con);
