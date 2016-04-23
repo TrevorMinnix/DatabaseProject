@@ -28,9 +28,9 @@ if (isset($_POST['submitNomineeForm'])) {
 	
 	$updateNomination = "UPDATE nomination SET responded=1 WHERE pid='{$_SESSION['user']}' AND sessionid='{$_SESSION['sessionid']}'";
 								
-    //Execute the querys
+    //Execute the queries
     $executeNomineeUpdate = mysqli_query($con, $updateNominee) or trigger_error("Query Failed! SQL: $updateNominee - Error: " . mysqli_error($con), E_USER_ERROR);
-	$executeNominationUpdate = mysqli_query($con, $updateNominee) or trigger_error("Query Failed! SQL: $updateNominee - Error: " . mysqli_error($con), E_USER_ERROR);
+	$executeNominationUpdate = mysqli_query($con, $updateNomination) or trigger_error("Query Failed! SQL: $updateNominee - Error: " . mysqli_error($con), E_USER_ERROR);
 
     //Now the nominee has just filled out the form, an email needs to be sent to the nominator in the block below.
 	
