@@ -17,6 +17,7 @@
 		{
 			echo "Past Deadline!";
 		}
+		mysqli_close($con);
 		?>
             <form action="submitNomineeForm.php" method="POST">
                 <div style="width:50%; float:left;">
