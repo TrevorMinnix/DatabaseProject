@@ -58,7 +58,7 @@ if(isset($_POST['submitNomination'])){
 
 	//A nominee was just nominated, and an email needs to be send to notify the nominee
 	
-	$messagebody = urlencode ("http://127.0.0.1/newnominee.php?pid=$nomineePid");
+	$messagebody = urlencode ("You have been nominated to be a GTA. http://127.0.0.1/newnominee.php?pid=$nomineePid");
 	header("Location:sendmail.py?recipient=$nomineeEmail&body=$messagebody");
 	
 }
