@@ -35,7 +35,9 @@
 				$ct = 0;
                 echo "<tr>";
                 echo "<td>" . $row1['nominatorName'] . "</td>";
-                echo "<td>" . $row1['nomineeName'] . "</td>";	//TODO: add popup with nominee information
+                //echo "<td>" . $row1['nomineeName'] . "</td>";	//TODO: add popup with nominee information
+				$nomineeURL = "nomineeInfo.php?pid=" . $row1['pid'];
+				echo "<td>" . "<a href=\"{$nomineeURL}\" target=\"_blank\">" . $row1['nomineeName'] . "</a>" . "</td>";
 				echo "<td>" . $row1['ranking'] . "</td>";
 				//replace newlyAdmitted int
 				if($row1['newlyAdmitted'] == 1){
