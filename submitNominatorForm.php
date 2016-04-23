@@ -5,9 +5,18 @@ include 'connect.php';
 // checking the user
 if(isset($_POST['submitNomination'])){
 	
+	$nominatorLogin = $_SESSION['user'];
+	$sessionId = $_SESSION['sessionid'];
+	
+	//get nominator name and email
+	$nominatorQuery = mysqli_query($con, "SELECT nominatorName, nominatorEmail FROM gtanominator WHERE nominatorLogin='{$nominatorLogin}'");
+	$nominatorInfo = mysqli_fetch_array($nominatorQuery);
+	$nominatorName = $nominatorInfo['nominatorName'];
+	$nominatorEmail = $nominatorInfo['nominatorEmail'];
+	
 	//Getting all the values set by the professor for the nomination 
-	$nominatorName = mysqli_real_escape_string($con,$_POST["nominatorName"]);
-	$nominatorEmail = mysqli_real_escape_string($con,$_POST["nominatorEmail"]);
+	/* $nominatorName = mysqli_real_escape_string($con,$_POST["nominatorName"]);
+	$nominatorEmail = mysqli_real_escape_string($con,$_POST["nominatorEmail"]); */
 	$nomineeName = mysqli_real_escape_string($con,$_POST["nomineeName"]);
 	$nomineeRank = mysqli_real_escape_string($con,$_POST["nomineeRank"]);
 	$nomineePid = mysqli_real_escape_string($con,$_POST["nomineePid"]);	
@@ -16,17 +25,20 @@ if(isset($_POST['submitNomination'])){
 	$isNomineeNewlyAdmitted = mysqli_real_escape_string($con,$_POST["isNomineeNewlyAdmitted"]);	
 	$timestamp = date('y-m-d h:m:s');
 	
+	//$nomineeName = $_POST['nomineePid'];
+	//$nomineePid = '963852741';
+	//$nomineeEmail = 'gta1@emailinator.com';
+	//$isNomineePhdStudent = 1;
+	//$isNomineeNewlyAdmitted = 0;
+	
 	//Query to create the nominee data that the nominator has entered
 	$createNominee = "INSERT INTO gtanominee 
-		(nomineeName, nomineeRank, pid, nomineeEmail, isPHDStudent, newlyAdmitted) 
-		VALUES ('$nomineeName', '$nomineeRank', '$nomineePid', '$nomineeEmail', 
-			'$isNomineePhdStudent', '$isNomineeNewlyAdmitted')";
+		(nomineeName, pid, nomineeEmail, isPHDStudent, newlyAdmitted) 
+		VALUES ('{$nomineeName}', '{$nomineePid}', '{$nomineeEmail}', 
+			'{$isNomineePhdStudent}', '{$isNomineeNewlyAdmitted}')";
 	
 	//Execute the query
 	$executeNomineeCreation = mysqli_query($con, $createNominee);
-	
-	$nominatorLogin = $_SESSION['user'];
-	$sessionId = $_SESSION['sessionId'];
 	
 	//Update the relationship table because a nomination has just occurred
 	$createNomination = "INSERT INTO nomination 
