@@ -25,11 +25,22 @@ if (isset($_POST['submitNomineeForm'])) {
     /* $updateNominee = "INSERT INTO gtanominee 	(advisor, newlyAdmitted, nomineeName, nomineeEmail, isPHDStudent, nomineePhone, semestersAsGrad, passedSpeak, semestersAsGTA, gradCourses, gpa, publications, pid)
 								VALUES 			('$advisorName', $isNomineeNewlyAdmitted , '$nomineeName' , '$nomineeEmail' , $isNomineePhdStudent , '$nomineePhone',$numberOfSemAsGTA,$isNomineePassedSpeak,$numberOfSemAsGTA,'$coursesCompleted',$coursesGPA, '$publications', '$nomineePid');"; */
 	$updateNominee = "UPDATE gtanominee SET nomineePhone='$nomineePhone', semestersAsGrad='$numberOfSem', passedSpeak='$isNomineePassedSpeak', semestersAsGTA='$numberOfSemAsGTA', gradCourses='$coursesCompleted', gpa='$coursesGPA', publications='$publications', advisor='$advisorName' WHERE pid='{$_SESSION['user']}'";
+	
+	$updateNomination = "UPDATE nomination SET responded=1 WHERE pid='{$_SESSION['user']}' AND sessionid='{$_SESSION['sessionid']}'";
 								
-    //Execute the query
+    //Execute the querys
     $executeNomineeUpdate = mysqli_query($con, $updateNominee) or trigger_error("Query Failed! SQL: $updateNominee - Error: " . mysqli_error($con), E_USER_ERROR);
+	$executeNominationUpdate = mysqli_query($con, $updateNominee) or trigger_error("Query Failed! SQL: $updateNominee - Error: " . mysqli_error($con), E_USER_ERROR);
 
     //Now the nominee has just filled out the form, an email needs to be sent to the nominator in the block below.
 	
+	//get nominator email
+	$nominatorEmailQuery = mysqli_query($con, "SELECT nominatorEmail FROM gtanominator INNER JOIN nomination ON gtanominator.nominatorLogin=nomination.nominatorLogin WHERE sessionid='{$_SESSION['sessionid']}' AND pid='{$_SESSION['user']}'");
+	$nominatorEmailInfo = mysqli_fetch_array($nominatorEmailQuery);
+	$nominatorEmail = $nominatorEmailInfo['nominatorEmail'];
+	
+	
+	$messagebody = urlencode ("Verify nominee information. http://127.0.0.1/verifyNominee.php?pid={$_SESSION['user']}");
+	header("Location:sendmail.py?recipient=$nominatorEmail&body=$messagebody");
 }
 ?>
