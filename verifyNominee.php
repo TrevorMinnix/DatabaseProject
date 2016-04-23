@@ -65,12 +65,13 @@
 			
 			echo '<br>
 				<form action="" method="POST">
-					Verify Nominee
-					<input type="submit" name="submit" value"Verify Nominee">
+					<input type="submit" name="submit" value="Verify Nominee">
 				</form>';
 				
 			if(isset($_POST['submit'])){
 				$nomineeVerificationUpdate = mysqli_query($con, "UPDATE nomination SET verified=1 WHERE pid='{$_GET['pid']}' AND sessionid='{$_SESSION['sessionid']}'");
+				
+				header("Refresh:0");
 			}
 			
             mysqli_close($con);

@@ -17,7 +17,9 @@
 			//get gc members in current session
 			$gc_members = mysqli_query($con, "SELECT gcName, gcmember.gcLogin FROM gcmember INNER JOIN sessiongc ON gcmember.gcLogin=sessiongc.gcLogin WHERE sessionid=\"{$_SESSION['sessionid']}\" ORDER BY gcName ASC");
 
-			echo'<h2>Verified Nominees</h2>';
+			//build table
+			echo '<h2>Verified Nominees</h2>';
+			echo '<form action="" method="POST">';
             echo "<table border='1'>
                     <tr>
                     <th>Nominator</th>
@@ -67,7 +69,8 @@
 					//else if user's cells is empty, allow score and comment input in cells owned by logged in user
 					else if($_SESSION["user"] == $row2['gcLogin'])
 					{
-						echo"<td>field here</td><td>field here</td>";	//TODO: add fields to update scores in table
+						//inputs labeled as score or comment cocatenated with pid
+						echo'<td><input type="text" name="s' . $row1['pid'] . '" placeholder="Score"></td><td><input type="text" name="c' . $row1['pid'] . '" placeholder="Comment"></td>';
 					}
 					//else leave cells empty
 					else{
@@ -82,10 +85,29 @@
 					$average = 0;
 				}
 				
-				echo "<td>" . $average . "</td>";
+				echo "<td>" . round($average, 2) . "</td>";
                 echo "</tr>";
             }
             echo "</table>";
+			//submit button
+			echo '<input type="submit" name="button" value="Submit Scores">';
+			echo "</form>";
+			
+			if(isset($_POST['button'])){
+				foreach($_POST as $Field=>$Value){
+					if($Value != ""){
+						if($Field[0] === 's'){
+						$scorePid = substr($Field, 1);
+						mysqli_query($con, "INSERT INTO gcscoring (gcLogin, pid, sessionid, score) VALUES ('{$_SESSION['user']}', '$scorePid', '{$_SESSION['sessionid']}', '$Value')");
+						}
+						else if($Field[0] === 'c'){
+							mysqli_query($con, "UPDATE gcscoring SET comment='$Value' WHERE pid='$scorePid' AND gcLogin='{$_SESSION['user']}' AND sessionid='{$_SESSION['sessionid']}'");
+						}
+					}
+					
+					header("Refresh:0");
+				}
+			}
 			
 			//unverified or unresponding nominees
 			$incompleteQuery = mysqli_query($con, "SELECT nomineeName, responded, verified, gtanominee.pid FROM gtanominee INNER JOIN nomination ON gtanominee.pid=nomination.pid WHERE sessionid='{$_SESSION['sessionid']}' AND (responded=0 OR verified=0) ORDER BY nomineeName ASC");
