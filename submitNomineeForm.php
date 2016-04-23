@@ -30,6 +30,6 @@ if (isset($_POST['submitNomineeForm'])) {
     $executeNomineeUpdate = mysqli_query($con, $updateNominee) or trigger_error("Query Failed! SQL: $updateNominee - Error: " . mysqli_error($con), E_USER_ERROR);
 
     //Now the nominee has just filled out the form, an email needs to be sent to the nominator in the block below.
-
+	
 }
 ?>

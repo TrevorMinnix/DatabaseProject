@@ -5,6 +5,19 @@
         <input type="radio" name="tabs" id="tab2" checked/>
         <label for="tab2">Nominee</label>
         <div id="tab-content2" class="tab-content">
+		<?php
+		session_start();
+		include 'connect.php';
+		
+		//check if past deadline
+		$deadlineQuery = mysqli_query($con, "SELECT nomineeResponseDeadline FROM session WHERE sessionid='{$_SESSION['sessionid']}'");
+		$deadlineResult = mysqli_fetch_array($deadlineQuery);
+		
+		if($deadlineResult['nomineeResponseDeadline'] < date("Y-m-d H:i:s"))
+		{
+			echo "Past Deadline!";
+		}
+		?>
             <form action="submitNomineeForm.php" method="POST">
                 <div style="width:50%; float:left;">
                     <!-- <p style="padding-bottom:15px;">

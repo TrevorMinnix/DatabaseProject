@@ -15,6 +15,6 @@ if (isset($_GET['pid'])) {
     $_SESSION['user'] = $_GET['pid'];
     $_SESSION['usertype'] = 'nominee';
 
-    header("Location:Nominee.html");
+    header("Location:Nominee.php");
 }
 ?>
