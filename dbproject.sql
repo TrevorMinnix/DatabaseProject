@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 23, 2016 at 12:37 AM
+-- Generation Time: Apr 23, 2016 at 06:30 PM
 -- Server version: 5.7.11
 -- PHP Version: 5.6.19
 
@@ -88,8 +88,17 @@ CREATE TABLE `gcscoring` (
   `gcLogin` varchar(50) NOT NULL,
   `pid` varchar(20) NOT NULL,
   `score` int(11) NOT NULL,
-  `sessionid` varchar(20) NOT NULL
+  `sessionid` varchar(20) NOT NULL,
+  `comment` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `gcscoring`
+--
+
+INSERT INTO `gcscoring` (`gcLogin`, `pid`, `score`, `sessionid`, `comment`) VALUES
+('gc1', '0748918312', 75, 'summer2017', NULL),
+('gc3', '0748918312', 100, 'summer2017', 'Comment');
 
 -- --------------------------------------------------------
 
@@ -136,6 +145,21 @@ CREATE TABLE `gtanominee` (
   `verified` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `gtanominee`
+--
+
+INSERT INTO `gtanominee` (`advisor`, `nomineeName`, `pid`, `nomineeEmail`, `nomineePhone`, `isPHDStudent`, `semestersAsGrad`, `passedSpeak`, `semestersAsGTA`, `gradCourses`, `gpa`, `publications`, `newlyAdmitted`, `verified`) VALUES
+('asghkghjk', 'Daniella, Kasia', '0748918312', 'gta4@mailinator.com', '6435187964', 0, 4, 2, 2, 'dfgfgs', 3, 'asdfaa', 1, 0),
+('sdfgsdfg', 'Tammie, Joanie', '1192237342', 'gta3@mailinator.com', '6413598999', 1, 1, 1, 3, 'dfghdfgadfg', 4, 'dfgsdfgsdfg', 1, 0),
+('sdfgfghjgfhj', 'Maris, Phillip', '1255106636', 'gta6@mailinator.com', '9373640293', 1, 7, 1, 4, 'asdnhmghjkghjk', 0, 'ghjkdfghadf', 0, 0),
+(NULL, 'Linette, Elaine', '1744857750', 'gta2@mailinator.com', NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0),
+(NULL, 'Sharlene, Damon', '2162494240', 'gta5@mailinator.com', NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0),
+(NULL, 'Lark, Joanie', '2546029920', 'gta9@mailinator.com', NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0),
+(NULL, 'Lyla, Sonny', '4398964083', 'gta8@mailinator.com', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0),
+(NULL, 'Abd, Grover', '5826110693', 'gta1@mailinator.com', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0),
+(NULL, 'Freda, Loretta', '6009090366', 'gta7@mailinator.com', NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -149,6 +173,21 @@ CREATE TABLE `nomination` (
   `timestamp` datetime NOT NULL,
   `sessionid` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `nomination`
+--
+
+INSERT INTO `nomination` (`nominatorLogin`, `pid`, `ranking`, `timestamp`, `sessionid`) VALUES
+('nom1', '1192237342', 3, '2016-04-23 04:04:19', 'summer2017'),
+('nom1', '1744857750', 2, '2016-04-23 04:04:51', 'summer2017'),
+('nom1', '5826110693', 1, '2016-04-23 04:04:34', 'summer2017'),
+('nom2', '0748918312', 1, '2016-04-23 04:04:06', 'summer2017'),
+('nom2', '1255106636', 3, '2016-04-23 04:04:15', 'summer2017'),
+('nom2', '2162494240', 2, '2016-04-23 04:04:43', 'summer2017'),
+('nom3', '2546029920', 3, '2016-04-23 04:04:07', 'summer2017'),
+('nom3', '4398964083', 2, '2016-04-23 04:04:29', 'summer2017'),
+('nom3', '6009090366', 1, '2016-04-23 04:04:00', 'summer2017');
 
 -- --------------------------------------------------------
 
@@ -221,6 +260,21 @@ CREATE TABLE `sessionnominee` (
   `sessionid` varchar(20) NOT NULL,
   `gtanomineeLogin` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `sessionnominee`
+--
+
+INSERT INTO `sessionnominee` (`sessionid`, `gtanomineeLogin`) VALUES
+('summer2017', '0748918312'),
+('summer2017', '1192237342'),
+('summer2017', '1255106636'),
+('summer2017', '1744857750'),
+('summer2017', '2162494240'),
+('summer2017', '2546029920'),
+('summer2017', '4398964083'),
+('summer2017', '5826110693'),
+('summer2017', '6009090366');
 
 --
 -- Indexes for dumped tables
