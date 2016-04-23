@@ -51,8 +51,9 @@
 				while($row2 = mysqli_fetch_array($gc_members))
 				{
 					//if there is a score for that gc member and nominee, print
-					$score = mysqli_query($con, "SELECT score, comment, gcLogin FROM gcscoring WHERE gcLogin=\"{$row2['gcLogin']}\" AND pid=\"{$row1['pid']}\"");
-					if($row3 = mysqli_fetch_array($score)){
+					$score = mysqli_query($con, "SELECT score, comment, gcLogin FROM gcscoring WHERE gcLogin='{$row2['gcLogin']}' AND pid='{$row1['pid']}'");
+					if($score){
+						$row3 = mysqli_fetch_array($score);
 						$sum = $sum + $row3['score'];
 						$ct++;
 						echo "<td>" . $row3['score'] . "</td>";
