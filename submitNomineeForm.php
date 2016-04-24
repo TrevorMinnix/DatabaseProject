@@ -41,6 +41,7 @@ if (isset($_POST['submitNomineeForm'])) {
 	
 	
 	$messagebody = urlencode ("Verify nominee information. http://127.0.0.1/verifyNominee.php?pid={$_SESSION['user']}");
-	header("Location:sendmail.py?recipient=$nominatorEmail&body=$messagebody");
+	$subject = urlencode("Verify GTA Nominee");
+	header("Location:sendmail.py?recipient=$nominatorEmail&subject=$subject&body=$messagebody");
 }
 ?>
