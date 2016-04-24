@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 23, 2016 at 11:56 PM
+-- Generation Time: Apr 24, 2016 at 10:43 PM
 -- Server version: 5.7.11
 -- PHP Version: 5.6.19
 
@@ -98,7 +98,10 @@ CREATE TABLE `gcscoring` (
 
 INSERT INTO `gcscoring` (`gcLogin`, `pid`, `score`, `sessionid`, `comment`) VALUES
 ('gc1', '0748918312', 75, 'summer2017', NULL),
-('gc3', '0748918312', 100, 'summer2017', 'Comment');
+('gc2', '0748918312', 1, 'summer2017', 'Terrible'),
+('gc2', '1744857750', 100, 'summer2017', 'Great!'),
+('gc3', '0748918312', 100, 'summer2017', 'Comment'),
+('gc3', '1744857750', 90, 'summer2017', NULL);
 
 -- --------------------------------------------------------
 
@@ -172,23 +175,24 @@ CREATE TABLE `nomination` (
   `timestamp` datetime NOT NULL,
   `sessionid` varchar(20) NOT NULL,
   `verified` tinyint(4) NOT NULL DEFAULT '0',
-  `responded` tinyint(4) NOT NULL DEFAULT '0'
+  `responded` tinyint(4) NOT NULL DEFAULT '0',
+  `averageScore` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `nomination`
 --
 
-INSERT INTO `nomination` (`nominatorLogin`, `pid`, `ranking`, `timestamp`, `sessionid`, `verified`, `responded`) VALUES
-('nom1', '1192237342', 3, '2016-04-23 04:04:19', 'summer2017', 0, 1),
-('nom1', '1744857750', 2, '2016-04-23 04:04:51', 'summer2017', 1, 1),
-('nom1', '5826110693', 1, '2016-04-23 04:04:34', 'summer2017', 0, 0),
-('nom2', '0748918312', 1, '2016-04-23 04:04:06', 'summer2017', 1, 1),
-('nom2', '1255106636', 3, '2016-04-23 04:04:15', 'summer2017', 0, 1),
-('nom2', '2162494240', 2, '2016-04-23 04:04:43', 'summer2017', 1, 1),
-('nom3', '2546029920', 3, '2016-04-23 04:04:07', 'summer2017', 0, 1),
-('nom3', '4398964083', 2, '2016-04-23 04:04:29', 'summer2017', 0, 0),
-('nom3', '6009090366', 1, '2016-04-23 04:04:00', 'summer2017', 0, 0);
+INSERT INTO `nomination` (`nominatorLogin`, `pid`, `ranking`, `timestamp`, `sessionid`, `verified`, `responded`, `averageScore`) VALUES
+('nom1', '1192237342', 3, '2016-04-23 04:04:19', 'summer2017', 0, 1, 0),
+('nom1', '1744857750', 2, '2016-04-23 04:04:51', 'summer2017', 1, 1, 95),
+('nom1', '5826110693', 1, '2016-04-23 04:04:34', 'summer2017', 0, 0, 0),
+('nom2', '0748918312', 1, '2016-04-23 04:04:06', 'summer2017', 1, 1, 59),
+('nom2', '1255106636', 3, '2016-04-23 04:04:15', 'summer2017', 0, 1, 0),
+('nom2', '2162494240', 2, '2016-04-23 04:04:43', 'summer2017', 1, 1, 0),
+('nom3', '2546029920', 3, '2016-04-23 04:04:07', 'summer2017', 0, 1, 0),
+('nom3', '4398964083', 2, '2016-04-23 04:04:29', 'summer2017', 0, 0, 0),
+('nom3', '6009090366', 1, '2016-04-23 04:04:00', 'summer2017', 0, 0, 0);
 
 -- --------------------------------------------------------
 

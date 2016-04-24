@@ -8,11 +8,41 @@
             <?php
 			session_start();
             include 'connect.php';
+			
+			//update average scores
+			//get verified nominees
+			$verifiedNomineesQuery = mysqli_query($con, "SELECT pid FROM nomination WHERE verified=1");
+			//loop through nominees
+			while($row4 = mysqli_fetch_array($verifiedNomineesQuery)){
+				//get scores
+				$nomineeScoresQuery = mysqli_query($con, "SELECT score FROM gcscoring WHERE pid='{$row4['pid']}' AND sessionid='{$_SESSION['sessionid']}'");
+				
+				//compute average
+				$sum = 0;
+				$ct = 0;
+				
+				//if nominee has no scores
+				if(mysqli_num_rows($nomineeScoresQuery) == 0)
+				{
+					mysqli_query($con, "UPDATE nomination SET averageScore='0' WHERE pid='{$row4['pid']}' AND sessionid='{$_SESSION['sessionid']}'");
+				}
+				else{
+					while($row5 = mysqli_fetch_array($nomineeScoresQuery)){
+						$ct++;
+						$sum = $sum + $row5['score'];
+					}
+					$average = $sum/$ct;
+					
+					mysqli_query($con, "UPDATE nomination SET averageScore='{$average}' WHERE pid='{$row4['pid']}' AND sessionid='{$_SESSION['sessionid']}'");
+				}
+				
+				
+			}
 
 
 			//get table data excluding gc scores
 			//verified nominees only
-            $table_data = mysqli_query($con, "SELECT nominatorName, nomineeName, ranking, newlyAdmitted, gtanominee.pid FROM gtanominee INNER JOIN nomination ON gtanominee.pid=nomination.pid INNER JOIN gtanominator ON gtanominator.nominatorLogin=nomination.nominatorLogin WHERE sessionid=\"{$_SESSION['sessionid']}\" AND verified=1 ORDER BY nominatorName ASC, ranking ASC");
+            $table_data = mysqli_query($con, "SELECT nominatorName, nomineeName, ranking, newlyAdmitted, gtanominee.pid, averageScore FROM gtanominee INNER JOIN nomination ON gtanominee.pid=nomination.pid INNER JOIN gtanominator ON gtanominator.nominatorLogin=nomination.nominatorLogin WHERE sessionid=\"{$_SESSION['sessionid']}\" AND verified=1 ORDER BY nominatorName ASC, ranking ASC");
 			
 			//get gc members in current session
 			$gc_members = mysqli_query($con, "SELECT gcName, gcmember.gcLogin FROM gcmember INNER JOIN sessiongc ON gcmember.gcLogin=sessiongc.gcLogin WHERE sessionid=\"{$_SESSION['sessionid']}\" ORDER BY gcName ASC");
@@ -61,8 +91,8 @@
 					$score = mysqli_query($con, "SELECT score, comment FROM gcscoring WHERE gcLogin='{$row2['gcLogin']}' AND pid='{$row1['pid']}'");
 					if(mysqli_num_rows($score) == 1){
 						$row3 = mysqli_fetch_array($score);
-						$sum = $sum + $row3['score'];
-						$ct++;
+						//$sum = $sum + $row3['score'];
+						//$ct++;
 						echo "<td>" . $row3['score'] . "</td>";
 						echo "<td>" . $row3['comment'] . "</td>";
 					}
@@ -77,15 +107,16 @@
 						echo "<td></td><td></td>";
 					}
 				}
-				//average
+				/* //average
 				if($ct != 0){
-					$average = $sum/$ct;
+					//$average = $sum/$ct;
 				}
 				else{
 					$average = 0;
-				}
+				} */
+				//average
 				
-				echo "<td>" . round($average, 2) . "</td>";
+				echo "<td>" . round($row1['averageScore'], 2) . "</td>";
                 echo "</tr>";
             }
             echo "</table>";
