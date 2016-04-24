@@ -6,6 +6,8 @@ include 'connect.php';
 
 // checking the user
 if (isset($_POST['LOGIN'])) {
+	//default gc table sort
+	$_SESSION['method'] = "nominatorName ASC, ranking ASC";
 
     $user = mysqli_real_escape_string($con, $_POST["username"]);
 

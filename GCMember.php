@@ -42,7 +42,7 @@
 
 			//get table data excluding gc scores
 			//verified nominees only
-            $table_data = mysqli_query($con, "SELECT nominatorName, nomineeName, ranking, newlyAdmitted, gtanominee.pid, averageScore FROM gtanominee INNER JOIN nomination ON gtanominee.pid=nomination.pid INNER JOIN gtanominator ON gtanominator.nominatorLogin=nomination.nominatorLogin WHERE sessionid=\"{$_SESSION['sessionid']}\" AND verified=1 ORDER BY nominatorName ASC, ranking ASC");
+            $table_data = mysqli_query($con, "SELECT nominatorName, nomineeName, ranking, newlyAdmitted, gtanominee.pid, averageScore FROM gtanominee INNER JOIN nomination ON gtanominee.pid=nomination.pid INNER JOIN gtanominator ON gtanominator.nominatorLogin=nomination.nominatorLogin WHERE sessionid=\"{$_SESSION['sessionid']}\" AND verified=1 ORDER BY {$_SESSION['method']}");
 			
 			//get gc members in current session
 			$gc_members = mysqli_query($con, "SELECT gcName, gcmember.gcLogin FROM gcmember INNER JOIN sessiongc ON gcmember.gcLogin=sessiongc.gcLogin WHERE sessionid=\"{$_SESSION['sessionid']}\" ORDER BY gcName ASC");
@@ -50,6 +50,8 @@
 			//build table
 			echo '<h2>Verified Nominees</h2>';
 			echo '<form action="" method="POST">';
+			echo '<br><input type="submit" name = methodRank value="Sort by Ranking">';
+			echo '<input type="submit" name = methodAverage value="Sort by Average Score">';
             echo "<table border='1'>
                     <tr>
                     <th>Nominator</th>
@@ -124,6 +126,7 @@
 			echo '<input type="submit" name="button" value="Submit Scores">';
 			echo "</form>";
 			
+			//submit button behavior
 			if(isset($_POST['button'])){
 				foreach($_POST as $Field=>$Value){
 					if($Value != ""){
@@ -138,6 +141,16 @@
 					
 					header("Refresh:0");
 				}
+			}
+			
+			//sorting button behavior
+			if(isset($_POST['methodRank'])){
+				$_SESSION['method'] = "nominatorName ASC, ranking ASC";
+				header("Refresh:0");
+			}
+			else if(isset($_POST['methodAverage'])){
+				$_SESSION['method'] = "averageScore DESC";
+				header("Refresh:0");
 			}
 			
 			//unverified or unresponding nominees
