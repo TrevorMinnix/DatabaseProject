@@ -40,8 +40,10 @@
 			}
 			echo "<td>" . $nomineeInfo['semestersAsGrad'] . "</td>";
 			//echo "<td>" . $nomineeInfo['passedSPEAK'] . "</td>";
-			if($nomineeInfo['passedSpeak']){
+			if($nomineeInfo['passedSpeak'] == 1){
 				echo "<td>Yes</td>";
+			}else if($nomineeInfo['passedSpeak'] == 2){
+				echo"<td>Graduated from US Institution";
 			}else{
 				echo "<td>No</td>";
 			}
