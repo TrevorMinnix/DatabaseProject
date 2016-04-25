@@ -5,6 +5,18 @@
 	}
 </script>
 <h1>GTAMS <span>GTA Management System</span></h1>
+<?php
+	//check if user is part of current session
+	session_start();
+	include 'connect.php';
+	
+	$sessionNominatorQuery = mysqli_query($con, "SELECT gtaNominatorLogin FROM sessionnominators WHERE sessionid='{$_SESSION['sessionid']}' AND gtaNominatorLogin='{$_SESSION['user']}'");
+	$sessionNominator = mysqli_fetch_array($sessionNominatorQuery);
+	
+	if(!$sessionNominator) :
+?>
+Nominator not in current session.
+<?php else : ?>
 <ul class="tabs">
 	<div style="float:right;">
 		<button onClick="newSession()" style="cursor: pointer; height:50px;width:150px;color:white; background:black; border:0px;">Pending Nominees</button>
@@ -14,8 +26,7 @@
         <label for="tab1">Nominator</label>
         <div id="tab-content1" class="tab-content">
 		<?php
-		session_start();
-		include 'connect.php';
+		
 		
 		//check if past deadline
 		$deadlineQuery = mysqli_query($con, "SELECT nominationDeadline FROM session WHERE sessionid='{$_SESSION['sessionid']}'");
@@ -69,4 +80,4 @@
 			</form>
 		</div>
     </li>
-  
+ <?php endif; ?>
