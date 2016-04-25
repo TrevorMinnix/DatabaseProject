@@ -9,6 +9,15 @@
 			session_start();
             include 'connect.php';
 
+			//check if past deadline
+			$deadlineQuery = mysqli_query($con, "SELECT nomineeVerificationDeadline FROM session WHERE sessionid='{$_SESSION['sessionid']}'");
+			$deadlineResult = mysqli_fetch_array($deadlineQuery);
+			
+			if($deadlineResult['nomineeVerificationDeadline'] < date("Y-m-d H:i:s"))
+			{
+				echo "Past Verification Deadline!";
+			}
+			
 			//get nominee info from database
 			$nomineeQuery = mysqli_query($con, "SELECT * FROM gtanominee INNER JOIN nomination ON gtanominee.pid=nomination.pid WHERE gtanominee.pid='{$_GET['pid']}' AND sessionid='{$_SESSION['sessionid']}'");
 			$nomineeInfo = mysqli_fetch_array($nomineeQuery);

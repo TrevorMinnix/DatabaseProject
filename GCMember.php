@@ -56,7 +56,7 @@
 			$gc_members = mysqli_query($con, "SELECT gcName, gcmember.gcLogin FROM gcmember INNER JOIN sessiongc ON gcmember.gcLogin=sessiongc.gcLogin WHERE sessionid=\"{$_SESSION['sessionid']}\" ORDER BY gcName ASC");
 
 			//build table
-			echo '<h2>Verified Nominees</h2>';
+			echo '<h4 style="padding-bottom:15px;">Verified Nominees</h4>';
 			echo '<form action="" method="POST">';
 			echo '<br><input type="submit" name = methodRank value="Sort by Ranking">';
 			echo '<input type="submit" name = methodAverage value="Sort by Average Score">';
@@ -165,7 +165,7 @@
 			$incompleteQuery = mysqli_query($con, "SELECT nomineeName, responded, verified, gtanominee.pid FROM gtanominee INNER JOIN nomination ON gtanominee.pid=nomination.pid WHERE sessionid='{$_SESSION['sessionid']}' AND (responded=0 OR verified=0) ORDER BY nomineeName ASC");
 			
 			
-			echo '<h2>Incomplete Nomination</h2>
+			echo '<h4 style="padding-bottom:15px;">Incomplete Nomination</h4>
 				<table border="1">
 					<th>Nominee</th>
 					<th>Reason</th>

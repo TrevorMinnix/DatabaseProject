@@ -15,7 +15,7 @@
 		
 		if($deadlineResult['nomineeResponseDeadline'] < date("Y-m-d H:i:s"))
 		{
-			echo "Past Deadline!";
+			echo "Past Nominee Response Deadline!";
 		}
 		mysqli_close($con);
 		?>
