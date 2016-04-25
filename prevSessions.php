@@ -4,8 +4,16 @@
 		display: none
 	}
 </style>
+<script>
+	function newSession() {
+		document.location.href = "GCMember.php";
+	}
+</script>
 <h1>GTAMS <span>GTA Management System</span></h1>
 <ul class="tabs">
+	<div style="float:right;">
+		<button onClick="newSession()" style="cursor: pointer; height:50px;width:150px;color:white; background:black; border:0px;">Current Session</button>
+	</div>
     <li>
         <input type="radio" name="tabs" id="tab3" checked/>
         <label for="tab3">Previous Sessions</label>

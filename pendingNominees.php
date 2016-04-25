@@ -1,6 +1,14 @@
 <link rel="stylesheet" type="text/css" href="DBHomeStyle.css">
 <h1>GTAMS <span>GTA Management System</span></h1>
+<script>
+	function newSession() {
+		document.location.href = "Nominator.php";
+	}
+</script>
 <ul class="tabs">
+	<div style="float:right;">
+		<button onClick="newSession()" style="cursor: pointer; height:50px;width:150px;color:white; background:black; border:0px;">Nomination</button>
+	</div>
     <li>
         <input type="radio" name="tabs" id="tab3" checked/>
         <label for="tab3">Nominee Info</label>
