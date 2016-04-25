@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 24, 2016 at 10:43 PM
+-- Generation Time: Apr 25, 2016 at 10:59 PM
 -- Server version: 5.7.11
 -- PHP Version: 5.6.19
 
@@ -98,6 +98,7 @@ CREATE TABLE `gcscoring` (
 
 INSERT INTO `gcscoring` (`gcLogin`, `pid`, `score`, `sessionid`, `comment`) VALUES
 ('gc1', '0748918312', 75, 'summer2017', NULL),
+('gc1', '2162494240', 60, 'summer2017', NULL),
 ('gc2', '0748918312', 1, 'summer2017', 'Terrible'),
 ('gc2', '1744857750', 100, 'summer2017', 'Great!'),
 ('gc3', '0748918312', 100, 'summer2017', 'Comment'),
@@ -189,7 +190,7 @@ INSERT INTO `nomination` (`nominatorLogin`, `pid`, `ranking`, `timestamp`, `sess
 ('nom1', '5826110693', 1, '2016-04-23 04:04:34', 'summer2017', 0, 0, 0),
 ('nom2', '0748918312', 1, '2016-04-23 04:04:06', 'summer2017', 1, 1, 59),
 ('nom2', '1255106636', 3, '2016-04-23 04:04:15', 'summer2017', 0, 1, 0),
-('nom2', '2162494240', 2, '2016-04-23 04:04:43', 'summer2017', 1, 1, 0),
+('nom2', '2162494240', 2, '2016-04-23 04:04:43', 'summer2017', 1, 1, 60),
 ('nom3', '2546029920', 3, '2016-04-23 04:04:07', 'summer2017', 0, 1, 0),
 ('nom3', '4398964083', 2, '2016-04-23 04:04:29', 'summer2017', 0, 0, 0),
 ('nom3', '6009090366', 1, '2016-04-23 04:04:00', 'summer2017', 0, 0, 0);
