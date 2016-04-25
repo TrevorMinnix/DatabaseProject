@@ -43,7 +43,7 @@
 			if($nomineeInfo['passedSpeak'] == 1){
 				echo "<td>Yes</td>";
 			}else if($nomineeInfo['passedSpeak'] == 2){
-				echo"<td>Graduated from US Institution";
+				echo"<td>Graduated from US Institution</td>";
 			}else{
 				echo "<td>No</td>";
 			}

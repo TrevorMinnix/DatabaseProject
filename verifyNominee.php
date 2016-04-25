@@ -36,7 +36,7 @@
 					<th>GPA</th>
 					<th>Publications</th>
 					<th>New or Existing</th>
-					<th>Verfied</th>
+					<th>Verified</th>
 					<th>Rank</th></tr>";
 			echo "<td>" . $nomineeInfo['nomineeName'] . "</td>";
 			echo "<td>" . $nomineeInfo['pid'] . "</td>";
@@ -49,8 +49,10 @@
 			}
 			echo "<td>" . $nomineeInfo['semestersAsGrad'] . "</td>";
 			//echo "<td>" . $nomineeInfo['passedSPEAK'] . "</td>";
-			if($nomineeInfo['passedSpeak']){
+			if($nomineeInfo['passedSpeak'] == 1){
 				echo "<td>Yes</td>";
+			}else if($nomineeInfo['passedSpeak'] == 2){
+				echo "<td>Graduated from US Institution</td>";
 			}else{
 				echo "<td>No</td>";
 			}
