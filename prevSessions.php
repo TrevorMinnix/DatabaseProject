@@ -1,29 +1,49 @@
 <link rel="stylesheet" type="text/css" href="DBHomeStyle.css">
-<script>
-	function newSession() {
-		document.location.href = "prevSessions.php";
+<style>
+	.inv{
+		display: none
 	}
-</script>
+</style>
 <h1>GTAMS <span>GTA Management System</span></h1>
 <ul class="tabs">
-<div style="float:right;">
-		<button onClick="newSession()" style="cursor: pointer; height:50px;width:150px;color:white; background:black; border:0px;">Previous Sessions</button>
-	</div>
     <li>
         <input type="radio" name="tabs" id="tab3" checked/>
-        <label for="tab3">GC Members</label>
+        <label for="tab3">Previous Sessions</label>
         <div id="tab-content3" class="tab-content" align="center">
+		<select id="target">
+            <option value="">Choose Session</option>
             <?php
-			session_start();
-            include 'connect.php';
+				session_start();
+				include 'connect.php';
 			
-			//update average scores
+				//old sessions to be displayed in drop down menu
+				$sessionQuery = mysqli_query($con, "SELECT sessionid FROM session WHERE currentlyActive=0");
+				while($oldSession = mysqli_fetch_array($sessionQuery))
+				{
+					echo "<option value='{$oldSession['sessionid']}'>{$oldSession['sessionid']}</option>";
+				}
+			?>
+        </select>
+
+        <div id="content_1" class="inv">Content 1</div>
+        <div id="content_2" class="inv">Content 2</div>
+        <div id="content_3" class="inv">Content 3</div>
+		<?php
+			//session table
+			//reset fetch position
+				mysqli_data_seek($sessionQuery, 0);
+			while($oldSession = mysqli_fetch_array($sessionQuery))
+			{
+			//div for drop down menu
+			echo "<div id='{$oldSession['sessionid']}' class='inv'>";
+			
+				//update average scores
 			//get verified nominees
 			$verifiedNomineesQuery = mysqli_query($con, "SELECT pid FROM nomination WHERE verified=1");
 			//loop through nominees
 			while($row4 = mysqli_fetch_array($verifiedNomineesQuery)){
 				//get scores
-				$nomineeScoresQuery = mysqli_query($con, "SELECT score FROM gcscoring WHERE pid='{$row4['pid']}' AND sessionid='{$_SESSION['sessionid']}'");
+				$nomineeScoresQuery = mysqli_query($con, "SELECT score FROM gcscoring WHERE pid='{$row4['pid']}' AND sessionid='{$oldSession['sessionid']}'");
 				
 				//compute average
 				$sum = 0;
@@ -32,7 +52,7 @@
 				//if nominee has no scores
 				if(mysqli_num_rows($nomineeScoresQuery) == 0)
 				{
-					mysqli_query($con, "UPDATE nomination SET averageScore='0' WHERE pid='{$row4['pid']}' AND sessionid='{$_SESSION['sessionid']}'");
+					mysqli_query($con, "UPDATE nomination SET averageScore='0' WHERE pid='{$row4['pid']}' AND sessionid='{$oldSession['sessionid']}'");
 				}
 				else{
 					while($row5 = mysqli_fetch_array($nomineeScoresQuery)){
@@ -41,7 +61,7 @@
 					}
 					$average = $sum/$ct;
 					
-					mysqli_query($con, "UPDATE nomination SET averageScore='{$average}' WHERE pid='{$row4['pid']}' AND sessionid='{$_SESSION['sessionid']}'");
+					mysqli_query($con, "UPDATE nomination SET averageScore='{$average}' WHERE pid='{$row4['pid']}' AND sessionid='{$oldSession['sessionid']}'");
 				}
 				
 				
@@ -50,10 +70,10 @@
 
 			//get table data excluding gc scores
 			//verified nominees only
-            $table_data = mysqli_query($con, "SELECT nominatorName, nomineeName, ranking, newlyAdmitted, gtanominee.pid, averageScore FROM gtanominee INNER JOIN nomination ON gtanominee.pid=nomination.pid INNER JOIN gtanominator ON gtanominator.nominatorLogin=nomination.nominatorLogin WHERE sessionid=\"{$_SESSION['sessionid']}\" AND verified=1 ORDER BY {$_SESSION['method']}");
+            $table_data = mysqli_query($con, "SELECT nominatorName, nomineeName, ranking, newlyAdmitted, gtanominee.pid, averageScore FROM gtanominee INNER JOIN nomination ON gtanominee.pid=nomination.pid INNER JOIN gtanominator ON gtanominator.nominatorLogin=nomination.nominatorLogin WHERE sessionid=\"{$oldSession['sessionid']}\" AND verified=1 ORDER BY {$_SESSION['method']}");
 			
 			//get gc members in current session
-			$gc_members = mysqli_query($con, "SELECT gcName, gcmember.gcLogin FROM gcmember INNER JOIN sessiongc ON gcmember.gcLogin=sessiongc.gcLogin WHERE sessionid=\"{$_SESSION['sessionid']}\" ORDER BY gcName ASC");
+			$gc_members = mysqli_query($con, "SELECT gcName, gcmember.gcLogin FROM gcmember INNER JOIN sessiongc ON gcmember.gcLogin=sessiongc.gcLogin WHERE sessionid=\"{$oldSession['sessionid']}\" ORDER BY gcName ASC");
 
 			//build table
 			echo '<h2>Verified Nominees</h2>';
@@ -81,7 +101,7 @@
                 echo "<td>" . $row1['nominatorName'] . "</td>";
                 //echo "<td>" . $row1['nomineeName'] . "</td>";	
 				//popup with nominee information
-				$nomineeURL = "nomineeInfo.php?pid=" . $row1['pid'] . "&sessionid=" . $_SESSION['sessionid'];
+				$nomineeURL = "nomineeInfo.php?pid=" . $row1['pid'] . "&sessionid=" . $oldSession['sessionid'];
 				echo "<td>" . "<a href=\"{$nomineeURL}\" target=\"_blank\">" . $row1['nomineeName'] . "</a>" . "</td>";
 				echo "<td>" . $row1['ranking'] . "</td>";
 				//replace newlyAdmitted int
@@ -106,12 +126,6 @@
 						echo "<td>" . $row3['score'] . "</td>";
 						echo "<td>" . $row3['comment'] . "</td>";
 					}
-					//else if user's cells is empty, allow score and comment input in cells owned by logged in user
-					else if($_SESSION["user"] == $row2['gcLogin'])
-					{
-						//inputs labeled as score or comment cocatenated with pid
-						echo'<td><input type="text" name="s' . $row1['pid'] . '" placeholder="Score"></td><td><input type="text" name="c' . $row1['pid'] . '" placeholder="Comment"></td>';
-					}
 					//else leave cells empty
 					else{
 						echo "<td></td><td></td>";
@@ -130,26 +144,7 @@
                 echo "</tr>";
             }
             echo "</table>";
-			//submit button
-			echo '<input type="submit" name="button" value="Submit Scores">';
 			echo "</form>";
-			
-			//submit button behavior
-			if(isset($_POST['button'])){
-				foreach($_POST as $Field=>$Value){
-					if($Value != ""){
-						if($Field[0] === 's'){
-						$scorePid = substr($Field, 1);
-						mysqli_query($con, "INSERT INTO gcscoring (gcLogin, pid, sessionid, score) VALUES ('{$_SESSION['user']}', '$scorePid', '{$_SESSION['sessionid']}', '$Value')");
-						}
-						else if($Field[0] === 'c'){
-							mysqli_query($con, "UPDATE gcscoring SET comment='$Value' WHERE pid='$scorePid' AND gcLogin='{$_SESSION['user']}' AND sessionid='{$_SESSION['sessionid']}'");
-						}
-					}
-					
-					header("Refresh:0");
-				}
-			}
 			
 			//sorting button behavior
 			if(isset($_POST['methodRank'])){
@@ -162,7 +157,7 @@
 			}
 			
 			//unverified or unresponding nominees
-			$incompleteQuery = mysqli_query($con, "SELECT nomineeName, responded, verified, gtanominee.pid FROM gtanominee INNER JOIN nomination ON gtanominee.pid=nomination.pid WHERE sessionid='{$_SESSION['sessionid']}' AND (responded=0 OR verified=0) ORDER BY nomineeName ASC");
+			$incompleteQuery = mysqli_query($con, "SELECT nomineeName, responded, verified, gtanominee.pid FROM gtanominee INNER JOIN nomination ON gtanominee.pid=nomination.pid WHERE sessionid='{$oldSession['sessionid']}' AND (responded=0 OR verified=0) ORDER BY nomineeName ASC");
 			
 			
 			echo '<h2>Incomplete Nomination</h2>
@@ -177,16 +172,34 @@
 				if($incomplete['responded']){
 					$reason = "Unverified";
 				}
-				$nomineeURL = "nomineeInfo.php?pid=" . $incomplete['pid'] . "&sessionid=" . $_SESSION['sessionid'];
+				$nomineeURL = "nomineeInfo.php?pid=" . $incomplete['pid'] . "&sessionid=" . $oldSession['sessionid'];
 				echo "<td>" . "<a href=\"{$nomineeURL}\" target=\"_blank\">" . $incomplete['nomineeName'] . "</a>" . "</td>";
 				echo '<td>' . $reason . '</td></tr>';
 			}
-					
-			//TODO: add submit button for scoring changes
+			}
 			
+			echo "</div>";
+		?>
+
+        <script>
+            document
+                .getElementById('target')
+                .addEventListener('change', function () {
+                    'use strict';
+                    var vis = document.querySelector('.vis'),   
+                        target = document.getElementById(this.value);
+                    if (vis !== null) {
+                        vis.className = 'inv';
+                    }
+                    if (target !== null ) {
+                        target.className = 'vis';
+                    }
+            });
+        </script>
+			
+            <?php
             mysqli_close($con);
             ?>
-            </table>
         </div>
     </li>
 </ul>

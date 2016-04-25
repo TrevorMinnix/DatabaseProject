@@ -10,7 +10,7 @@
             include 'connect.php';
 
 			//get nominee info from database
-			$nomineeQuery = mysqli_query($con, "SELECT * FROM gtanominee INNER JOIN nomination ON gtanominee.pid=nomination.pid WHERE gtanominee.pid='{$_GET['pid']}' AND sessionid='{$_SESSION['sessionid']}'");
+			$nomineeQuery = mysqli_query($con, "SELECT * FROM gtanominee INNER JOIN nomination ON gtanominee.pid=nomination.pid WHERE gtanominee.pid='{$_GET['pid']}' AND sessionid='{$_GET['sessionid']}'");
 			$nomineeInfo = mysqli_fetch_array($nomineeQuery);
 			
 			//information table
