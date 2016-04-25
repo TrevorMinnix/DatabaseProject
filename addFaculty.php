@@ -38,7 +38,8 @@ if (isset($_POST['addFaculty'])) {
     //The system admin has just submitted the form, the form has been saved, and it should be cleared now
 
     $messagebody = urlencode ("Your account has been made. Username: $facultyLogin Password: $facultyPass");
-    header("Location:sendmail.py?recipient=$facultyEmail&body=$messagebody");
+	$subject = urlencode ("GTA Nomination Account");
+    header("Location:sendmail.py?recipient=$facultyEmail&body=$messagebody&subject=$subject");
 
 }
 ?>
