@@ -1,6 +1,14 @@
 <link rel="stylesheet" type="text/css" href="DBHomeStyle.css">
+<script>
+	function newSession() {
+		document.location.href = "pendingNominees.php";
+	}
+</script>
 <h1>GTAMS <span>GTA Management System</span></h1>
 <ul class="tabs">
+	<div style="float:right;">
+		<button onClick="newSession()" style="cursor: pointer; height:50px;width:150px;color:white; background:black; border:0px;">Pending Nominees</button>
+	</div>
     <li style="text-align:center;">
         <input type="radio" name="tabs" id="tab1" checked />
         <label for="tab1">Nominator</label>

@@ -27,7 +27,7 @@
 					<th>GPA</th>
 					<th>Publications</th>
 					<th>New or Existing</th>
-					<th>Verfied</th>
+					<th>Verified</th>
 					<th>Rank</th></tr>";
 			echo "<td>" . $nomineeInfo['nomineeName'] . "</td>";
 			echo "<td>" . $nomineeInfo['pid'] . "</td>";

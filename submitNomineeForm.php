@@ -39,8 +39,11 @@ if (isset($_POST['submitNomineeForm'])) {
 	$nominatorEmailInfo = mysqli_fetch_array($nominatorEmailQuery);
 	$nominatorEmail = $nominatorEmailInfo['nominatorEmail'];
 	
+	//get nominee name
+	$nomineeNameQuery = mysqli_query($con, "SELECT nomineeName FROM gtanominee WHERE pid='{$_SESSION['user']}'");
+	$nomineeName = mysqli_fetch_array($nomineeNameQuery);
 	
-	$messagebody = urlencode ("Verify nominee information. http://127.0.0.1/verifyNominee.php?pid={$_SESSION['user']}");
+	$messagebody = urlencode ("Nominee, {$nomineeName['nomineeName']}, is ready for verification. Please log in and verify nominees. 127.0.0.1/index.html");
 	$subject = urlencode("Verify GTA Nominee");
 	header("Location:sendmail.py?recipient=$nominatorEmail&subject=$subject&body=$messagebody");
 }
