@@ -110,7 +110,7 @@
 					else if($_SESSION["user"] == $row2['gcLogin'])
 					{
 						//inputs labeled as score or comment cocatenated with pid
-						echo'<td><input type="text" name="s' . $row1['pid'] . '" placeholder="Score"></td><td><input type="text" name="c' . $row1['pid'] . '" placeholder="Comment"></td>';
+						echo'<td><input type="number" name="s' . $row1['pid'] . '" placeholder="Score" min="0" max="100"></td><td><input type="text" name="c' . $row1['pid'] . '" placeholder="Comment"></td>';
 					}
 					//else leave cells empty
 					else{
