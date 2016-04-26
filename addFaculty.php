@@ -15,7 +15,10 @@ if (isset($_POST['addFaculty'])) {
 
     //Admin is adding a gcchair to a session
     if ($facultyType == "gcchair") {
-        $queryToExecute = "INSERT INTO gcchair (gcLogin, sessionid) VALUES ('$facultyLogin', '$sessionid'); INSERT INTO gcmember (gcName, gcEmail, gcLogin, gcPass) VALUES ('$facultyName', '$facultyEmail', '$facultyLogin', '$facultyPass');INSERT INTO sessiongc (sessionid, gcLogin)VALUES('$sessionid', '$facultyLogin')";
+        $queryToExecute = "INSERT INTO gcmember (gcName, gcEmail, gcLogin, gcPass) 
+			VALUES ('$facultyName', '$facultyEmail', '$facultyLogin', '$facultyPass');
+			INSERT INTO sessiongc (sessionid, gcLogin)
+			VALUES('$sessionid', '$facultyLogin'); INSERT INTO gcchair (gcLogin, sessionid) VALUES ('$facultyLogin', '$sessionid'); INSERT INTO gcmember (gcName, gcEmail, gcLogin, gcPass) VALUES ('$facultyName', '$facultyEmail', '$facultyLogin', '$facultyPass');INSERT INTO sessiongc (sessionid, gcLogin)VALUES('$sessionid', '$facultyLogin')";
     } //Admin is adding a gcmember
     else if ($facultyType == "gcmember") {
         $insertInto = "gcmember";
